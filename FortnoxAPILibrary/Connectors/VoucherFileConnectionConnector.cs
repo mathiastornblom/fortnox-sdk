@@ -90,13 +90,7 @@ namespace FortnoxAPILibrary.Connectors
 		/// <returns>The created voucher file connection</returns>
 		public VoucherFileConnection Create(VoucherFileConnection voucherFileConnection)
 		{
-		    var financialYear = voucherFileConnection.VoucherYear;
-		    voucherFileConnection.VoucherYear = null; //Read-only
-
-			return BaseCreate(voucherFileConnection, new Dictionary<string, string>
-			{
-			    { "financialyear", financialYear }
-			});
+			return base.BaseCreate(voucherFileConnection);
 		}
 
 		/// <summary>

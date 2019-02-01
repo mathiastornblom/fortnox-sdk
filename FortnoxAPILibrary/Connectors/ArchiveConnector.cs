@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Reflection;
-using Microsoft.AspNetCore.StaticFiles;
 
 namespace FortnoxAPILibrary.Connectors
 {
@@ -250,11 +249,9 @@ namespace FortnoxAPILibrary.Connectors
 
 			var uploadedFile = base.BaseUploadFile("", folderId, data, name);
 
-            var provider = new FileExtensionContentTypeProvider();
-            provider.TryGetContentType(name, out var contentType);
-            uploadedFile.ContentType = contentType;
+			uploadedFile.ContentType = System.Web.MimeMapping.GetMimeMapping(name); // as good as archive...
 
-            uploadedFile.Data = new byte[data.Length];
+			uploadedFile.Data = new byte[data.Length];
 
 			data.CopyTo(uploadedFile.Data, 0);
 

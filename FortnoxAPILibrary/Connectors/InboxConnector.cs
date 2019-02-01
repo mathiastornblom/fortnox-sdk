@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.AspNetCore.StaticFiles;
 
 namespace FortnoxAPILibrary.Connectors
 {
@@ -199,9 +198,7 @@ namespace FortnoxAPILibrary.Connectors
 
             var uploadedFile = base.BaseUploadFile("", GetRealValueFromAttribute(inboxFolder), data, name);
 
-            var provider = new FileExtensionContentTypeProvider();
-            provider.TryGetContentType(name, out var contentType);
-            uploadedFile.ContentType = contentType;
+            uploadedFile.ContentType = System.Web.MimeMapping.GetMimeMapping(name);
 
             uploadedFile.Data = new byte[data.Length];
 
