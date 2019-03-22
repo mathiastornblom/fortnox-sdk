@@ -218,15 +218,15 @@ namespace FortnoxAPILibrary.Tests
 			connector.ClientSecret = cs;
 
 			var invoice = connector.Get("988");
-			invoice.PaymentWay = "CASH";
+			invoice.PaymentWay = InvoiceConnector.PaymentWay.CASH;
 			invoice = connector.Update(invoice);
 			Assert.IsFalse(connector.HasError);
-			Assert.IsTrue(invoice.PaymentWay == "CASH");
+			Assert.IsTrue(invoice.PaymentWay == InvoiceConnector.PaymentWay.CASH);
 
-			invoice.PaymentWay = "AA";
+			invoice.PaymentWay = InvoiceConnector.PaymentWay.AG;
 			invoice = connector.Update(invoice);
 			Assert.IsFalse(connector.HasError);
-			Assert.IsTrue(invoice.PaymentWay == "AA");
+			Assert.IsTrue(invoice.PaymentWay == InvoiceConnector.PaymentWay.AG);
 		}
 
 		[TestMethod]
@@ -238,7 +238,7 @@ namespace FortnoxAPILibrary.Tests
 
 			var invoice = connector.Get("5");
 			Assert.IsFalse(connector.HasError);
-			Assert.IsTrue(invoice.AccountingMethod == "ACCRUAL");
+			Assert.IsTrue(invoice.AccountingMethod == SupplierInvoiceConnector.AccountingMethod.ACCRUAL);
 
 			invoice.PaymentPending = "true";
 			invoice.CostCenter = "101";
