@@ -128,9 +128,9 @@ namespace FortnoxAPILibrary
 
 		private string ourReferenceField;
 
-		private string paymentWayField;
+        private InvoiceConnector.PaymentWay paymentWayField;
 
-		private string phone1Field;
+        private string phone1Field;
 
 		private string phone2Field;
 
@@ -869,8 +869,8 @@ namespace FortnoxAPILibrary
 			}
 		}
 
-		/// <remarks/>
-		public string PaymentWay
+        /// <remarks/>
+        public InvoiceConnector.PaymentWay PaymentWay
 		{
 			get
 			{
