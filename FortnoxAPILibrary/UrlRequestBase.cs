@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -13,70 +12,66 @@ namespace FortnoxAPILibrary
     /// <remarks/>
     public class UrlRequestBase
     {
-        string clientSecret;
+		string clientSecret;
 
-        string accessToken;
+		string accessToken;
 
-        private int MAX_REQUESTS_PER_SECOND = 3;
-        private static DateTime firstRequest = DateTime.Now;
-        private static int currentRequestsPerSecond = 0;
+		/// <summary>
+		/// Optional Fortnox Client Secret, if used it will override the static version.
+		/// </summary>
+		/// <exception cref="Exception">Exception will be thrown if client secret is not set.</exception>
+		public string ClientSecret
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(this.clientSecret))
+				{
+					return this.clientSecret;
+				}
 
-        /// <summary>
-        /// Optional Fortnox Client Secret, if used it will override the static version.
-        /// </summary>
-        /// <exception cref="Exception">Exception will be thrown if client secret is not set.</exception>
-        public string ClientSecret
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.clientSecret))
-                {
-                    return this.clientSecret;
-                }
+				if (!string.IsNullOrEmpty(ConnectionCredentials.ClientSecret))
+				{
+					return ConnectionCredentials.ClientSecret;
+				}
 
-                if (!string.IsNullOrEmpty(ConnectionCredentials.ClientSecret))
-                {
-                    return ConnectionCredentials.ClientSecret;
-                }
+				throw new Exception("Fortnox Client Secret must be set.");
+			}
+			set
+			{
+				this.clientSecret = value;
+			}
+		}
 
-                throw new Exception("Fortnox Client Secret must be set.");
-            }
-            set
-            {
-                this.clientSecret = value;
-            }
-        }
+		/// <summary>
+		/// Optional Fortnox Access Token, if used it will override the static version.
+		/// </summary>
+		/// /// <exception cref="Exception">Exception will be thrown if access token is not set.</exception>
+		public string AccessToken
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(this.accessToken))
+				{
+					return this.accessToken;
+				}
 
-        /// <summary>
-        /// Optional Fortnox Access Token, if used it will override the static version.
-        /// </summary>
-        /// /// <exception cref="Exception">Exception will be thrown if access token is not set.</exception>
-        public string AccessToken
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.accessToken))
-                {
-                    return this.accessToken;
-                }
+				if (!string.IsNullOrEmpty(ConnectionCredentials.AccessToken))
+				{
+					return ConnectionCredentials.AccessToken;
+				}
 
-                if (!string.IsNullOrEmpty(ConnectionCredentials.AccessToken))
-                {
-                    return ConnectionCredentials.AccessToken;
-                }
+				throw new Exception("Fortnox Access Token must be set.");
+			}
+			set
+			{
+				this.accessToken = value;
+			}
+		}
 
-                throw new Exception("Fortnox Access Token must be set.");
-            }
-            set
-            {
-                this.accessToken = value;
-            }
-        }
-
-        /// <summary>
-        /// Timeout of requests sent to the Fortnox API in miliseconds
-        /// </summary>
-        public int Timeout { get; set; }
+		/// <summary>
+		/// Timeout of requests sent to the Fortnox API in miliseconds
+		/// </summary>
+		public int Timeout { get; set; }
 
         /// <remarks/>
         public FortnoxError.ErrorInformation Error { get; set; }
@@ -126,40 +121,16 @@ namespace FortnoxAPILibrary
         internal string GetUrl(string index = "")
         {
             string[] str = new string[]{
-                ConnectionCredentials.FortnoxAPIServer,
-                this.Resource,
-                index
-            };
+				ConnectionCredentials.FortnoxAPIServer,
+				this.Resource,
+				index
+			};
 
             str = str.Where(s => s != "").ToArray();
 
             string requestUriString = String.Join("/", str);
 
             return requestUriString;
-        }
-
-        /// <summary>
-        /// This method is used to throttle every call to Fortnox. 
-        /// </summary>
-        internal void RateLimit()
-        {
-            bool reset = false;
-
-            currentRequestsPerSecond++;
-
-            if ((DateTime.Now - firstRequest).TotalMilliseconds >= (double)1000.0) reset = true;
-            else if (currentRequestsPerSecond >= MAX_REQUESTS_PER_SECOND)
-            {
-                // Wait out remainder of current second
-                Thread.Sleep(Convert.ToInt32((double)1000.0 - (DateTime.Now - firstRequest).TotalMilliseconds));
-                reset = true;
-            }
-
-            if (reset)
-            {
-                currentRequestsPerSecond = 0;
-                firstRequest = DateTime.Now;
-            }
         }
 
         /// <summary>
@@ -185,7 +156,6 @@ namespace FortnoxAPILibrary
             wr.Accept = "application/xml";
             wr.Method = method;
             wr.Timeout = this.Timeout;
-
             return wr;
         }
 
@@ -198,14 +168,12 @@ namespace FortnoxAPILibrary
 
             try
             {
-                RateLimit();
-
                 if (Method != "GET")
                 {
                     using (wr.GetRequestStream()) { }
                 }
 
-                using (HttpWebResponse response = (HttpWebResponse)wr.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse) wr.GetResponse())
                 {
                     httpStatusCode = response.StatusCode;
                 }
@@ -228,13 +196,11 @@ namespace FortnoxAPILibrary
             this.ResponseXml = "";
             try
             {
-                RateLimit();
-
                 XmlSerializer xs = new XmlSerializer(typeof(T));
 
                 if (Method != "GET")
                 {
-                    using (Stream requestStream = (Stream)wr.GetRequestStream())
+                    using (Stream requestStream = (Stream) wr.GetRequestStream())
                     {
                         xs.Serialize(requestStream, entity);
                     }
@@ -252,7 +218,7 @@ namespace FortnoxAPILibrary
                     }
                 }
 
-                using (HttpWebResponse response = (HttpWebResponse)wr.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse) wr.GetResponse())
                 {
                     httpStatusCode = response.StatusCode;
                     using (Stream responseStream = response.GetResponseStream())
@@ -317,14 +283,14 @@ namespace FortnoxAPILibrary
 
             try
             {
-                // prepp name and data
-                if (fileData == null)
-                {
-                    fileName = System.IO.Path.GetFileName(localPath);
-                    fileData = System.IO.File.ReadAllBytes(localPath);
-                }
+				// prepp name and data
+				if (fileData == null)
+				{
+					fileName = System.IO.Path.GetFileName(localPath);
+					fileData = System.IO.File.ReadAllBytes(localPath);
+				}
 
-                XmlSerializer xs = new XmlSerializer(typeof(T));
+				XmlSerializer xs = new XmlSerializer(typeof(T));
 
                 Random rand = new Random();
                 string boundary = "----boundary" + rand.Next().ToString();
@@ -388,33 +354,46 @@ namespace FortnoxAPILibrary
 
                 HttpWebRequest request = this.SetupRequest(url, "GET");
 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
                 {
                     httpStatusCode = response.StatusCode;
                     using (Stream responseStream = response.GetResponseStream())
                     {
-                        if (file == null)
-                        {
-                            // hdd
-                            WriteStream(responseStream);
-                        }
-                        else
-                        {
-                            // memory                          
-                            using (var ms = new System.IO.MemoryStream())
-                            {
-                                file.ContentType = response.Headers["Content-Type"];
-                                responseStream.CopyTo(ms);
-                                file.Data = ms.ToArray();
-                            }
-                        }
-                    }
-                }
-            }
+						if (file == null)
+						{
+							// hdd
+							WriteStream(responseStream);
+						}
+						else
+						{
+							// memory                          
+							using (var ms = new System.IO.MemoryStream())
+							{
+								file.ContentType = response.Headers["Content-Type"];
+                                file.Name = GetFileName(response.Headers);
+								responseStream.CopyTo(ms);
+								file.Data = ms.ToArray();								
+							}
+						}
+					}
+				}
+			}
             catch (WebException we)
             {
                 Error = this.HandleException(we);
             }
+        }
+
+        static string GetFileName(WebHeaderCollection responseHeaders)
+        {
+            var contentDisposition = responseHeaders.Get("Content-Disposition");
+            if (string.IsNullOrEmpty(contentDisposition))
+                return null;
+
+            var parts = contentDisposition.Split(';');
+            var fileNamePart = parts.FirstOrDefault(p => p.Trim().StartsWith("filename="));
+
+            return fileNamePart?.Trim().Replace("filename=", string.Empty);
         }
 
         internal File MoveFile(string fileId, string destination)
@@ -441,7 +420,7 @@ namespace FortnoxAPILibrary
                 }
 
                 HttpWebRequest request = this.SetupRequest(url, "PUT");
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
                 {
                     httpStatusCode = response.StatusCode;
                     using (Stream responseStream = response.GetResponseStream())
@@ -452,7 +431,7 @@ namespace FortnoxAPILibrary
                         }
                         using (var sr = new StringReader(this.ResponseXml))
                         {
-                            return (File)xs.Deserialize(sr);
+                            return (File) xs.Deserialize(sr);
                         }
                     }
                 }
