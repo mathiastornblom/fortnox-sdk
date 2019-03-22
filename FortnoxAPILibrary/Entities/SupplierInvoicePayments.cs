@@ -115,7 +115,9 @@ namespace FortnoxAPILibrary
 
 		private string numberField;
 
-		private string sourceField;
+        private string paymentDateField;
+
+        private string sourceField;
 
 		private string urlField;
 
@@ -210,8 +212,21 @@ namespace FortnoxAPILibrary
 			}
 		}
 
-		/// <remarks/>
-		public string Source
+        /// <remarks/>
+        public string PaymentDate
+        {
+            get
+            {
+                return this.paymentDateField;
+            }
+            set
+            {
+                this.paymentDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string Source
 		{
 			get
 			{
