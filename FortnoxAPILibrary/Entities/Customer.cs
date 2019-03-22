@@ -288,7 +288,11 @@ namespace FortnoxAPILibrary
 		{
 			get
 			{
-				return this.defaultDeliveryTypesField;
+                if (this.defaultDeliveryTypesField == null)
+                {
+                    this.defaultDeliveryTypesField = new InvoiceDefaultDeliveryTypes();
+                }
+                return this.defaultDeliveryTypesField;
 			}
 			set
 			{
