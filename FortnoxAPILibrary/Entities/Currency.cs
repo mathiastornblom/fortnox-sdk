@@ -42,13 +42,15 @@ namespace FortnoxAPILibrary
 
 		private string urlField;
 
-		/// <summary>
-		/// <para>The buy rate of the currency</para>
-		/// <para>Required:		No</para>
-		/// <para>Type:			Float</para>
-		/// <para>Permissions:	RW</para>
-		/// </summary>
-		public string BuyRate
+        private bool automaticField;
+
+        /// <summary>
+        /// <para>The buy rate of the currency</para>
+        /// <para>Required:		No</para>
+        /// <para>Type:			Float</para>
+        /// <para>Permissions:	RW</para>
+        /// </summary>
+        public string BuyRate
 		{
 			get
 			{
@@ -151,8 +153,20 @@ namespace FortnoxAPILibrary
 			}
 		}
 
-		/// <summary>This field is Read-Only in Fortnox</summary>
-		[System.Xml.Serialization.XmlAttributeAttribute()]
+        /// <remarks/>
+        public bool IsAutomatic
+        {
+            get
+            {
+                return this.automaticField;
+            }
+            set
+            {
+                this.automaticField = value;
+            }
+        }
+            /// <summary>This field is Read-Only in Fortnox</summary>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
 		[ReadOnly(true)]
 		public string url
 		{

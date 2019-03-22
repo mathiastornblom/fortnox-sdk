@@ -69,6 +69,8 @@ namespace FortnoxAPILibrary
 
 		private string urlField;
 
+        private bool automaticField;
+
 		/// <remarks/>
 		public string BuyRate
 		{
@@ -147,8 +149,20 @@ namespace FortnoxAPILibrary
 			}
 		}
 
-		/// <summary>This field is Read-Only in Fortnox</summary>
-		[System.Xml.Serialization.XmlAttributeAttribute()]
+        /// <remarks/>
+        public bool IsAutomatic
+        {
+            get
+            {
+                return this.automaticField;
+            }
+            set
+            {
+                this.automaticField = value;
+            }
+        }
+        /// <summary>This field is Read-Only in Fortnox</summary>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
 		[ReadOnly(true)]
 		public string url
 		{
