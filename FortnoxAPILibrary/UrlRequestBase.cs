@@ -149,9 +149,14 @@ namespace FortnoxAPILibrary
         {
             Error = null;
 
+            if (string.IsNullOrEmpty(ConnectionCredentials.AccessToken) || string.IsNullOrEmpty(ConnectionCredentials.ClientSecret))
+            {
+                throw new Exception("Access-Token and Client-Secret must be set");
+            }
+
             HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.Create(requestUriString);
-            wr.Headers.Add("access-token", this.AccessToken);
-            wr.Headers.Add("client-secret", this.ClientSecret);
+            wr.Headers.Add("access-token", ConnectionCredentials.AccessToken);
+            wr.Headers.Add("client-secret", ConnectionCredentials.ClientSecret);
             wr.ContentType = "application/xml";
             wr.Accept = "application/xml";
             wr.Method = method;
