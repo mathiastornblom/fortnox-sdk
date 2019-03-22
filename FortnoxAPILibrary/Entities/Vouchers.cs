@@ -99,7 +99,9 @@ public partial class VoucherSubset {
     private string referenceNumberField;
 
 	private string referenceTypeField;
-    
+
+    private string transactionDateField;
+
     private string voucherNumberField;
     
     private string voucherSeriesField;
@@ -128,7 +130,20 @@ public partial class VoucherSubset {
             this.referenceTypeField = value;
         }
     }
-    
+
+    /// <remarks/>
+    public string TransactionDate
+    {
+        get
+        {
+            return this.transactionDateField;
+        }
+        set
+        {
+            this.transactionDateField = value;
+        }
+    }
+
     /// <remarks/>
     public string VoucherNumber {
         get {
