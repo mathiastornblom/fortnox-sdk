@@ -82,6 +82,7 @@ namespace FortnoxAPILibrary
         /// True if something went wrong with the request. Otherwise false.
         /// </summary>
         bool HasError { get; }
+
     }
 
     /// <remarks />

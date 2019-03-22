@@ -1144,7 +1144,7 @@ namespace FortnoxAPILibrary
 
 		private string orderedQuantityField;
 
-		private string priceField;
+		private decimal priceField;
 
 		private string projectField;
 
@@ -1300,7 +1300,7 @@ namespace FortnoxAPILibrary
 		}
 
 		/// <remarks/>
-		public string Price
+		public decimal Price
 		{
 			get
 			{
