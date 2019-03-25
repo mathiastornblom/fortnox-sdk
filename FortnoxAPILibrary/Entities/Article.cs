@@ -100,6 +100,20 @@ namespace FortnoxAPILibrary
 
 	    private string freightCostField;
 
+        private string houseworkTypeField;
+
+        private string expiredField;
+
+        private string costCalculationMethodField;
+
+        private string stockAccountField;
+
+        private string stockChangeAccountField;
+
+        private string directCostField;
+
+        private string otherCostField;
+
 		/// <remarks/>
 		public string Active
 		{
@@ -233,11 +247,20 @@ namespace FortnoxAPILibrary
 
 
         /// <remarks/>
-        public string Expired { get; set; }
+        public string Expired 
+        {
+		    get
+			{
+				return this.expiredField;
+			}
+            set
+			{
+                this.expiredField = value;
+            }
+        }
 
-
-		/// <remarks/>
-		public string ExportAccount
+        /// <remarks/>
+        public string ExportAccount
 		{
 			get
 			{
@@ -543,8 +566,8 @@ namespace FortnoxAPILibrary
 			}
 		}
 
-		/// <remarks/>
-		public string Width
+        /// <remarks/>
+        public string Width
 		{
 			get
 			{
@@ -556,6 +579,7 @@ namespace FortnoxAPILibrary
 			}
 		}
 
+        /// <remarks/>
 	    public string FreightCost
         {
 	        get
@@ -567,6 +591,84 @@ namespace FortnoxAPILibrary
 	            this.freightCostField = value;
 	        }
 	    }
+
+        /// <remarks/>
+        public string HouseworkType
+        {
+	        get
+	        {
+		        return this.houseworkTypeField;
+	        }
+	        set
+	        {
+		        this.houseworkTypeField  = value;
+	        }
+        }
+
+        /// <remarks/>
+        private string CostCalculationMethod
+        {
+	        get
+	        {
+		        return this.costCalculationMethodField;
+	        }
+	        set
+	        {
+		        this.costCalculationMethodField  = value;
+	        }
+        }
+
+        /// <remarks/>
+        private string StockAccount
+        {
+	        get
+	        {
+		        return this.stockAccountField;
+	        }
+	        set
+	        {
+		        this.stockAccountField  = value;
+	        }
+        }
+
+        /// <remarks/>
+        private string StockChangeAccount
+        {
+	        get
+	        {
+		        return this.stockChangeAccountField;
+	        }
+	        set
+	        {
+		        this.stockChangeAccountField  = value;
+	        }
+        }
+
+        /// <remarks/>
+        private string DirectCost
+        {
+	        get
+	        {
+		        return this.directCostField;
+	        }
+	        set
+	        {
+		        this.directCostField  = value;
+	        }
+        }
+
+        /// <remarks/>
+        private string OtherCost
+        {
+	        get
+	        {
+		        return this.otherCostField;
+	        }
+	        set
+	        {
+		        this.otherCostField  = value;
+	        }
+        }
 
         /// <summary>This field is Read-Only in Fortnox</summary>
         [ReadOnly(true)]
